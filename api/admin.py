@@ -23,14 +23,3 @@ class MyUserAdmin(UserAdmin):
 
 # Register your models here, ex.:
 # admin.site.register(NameOfModel)
-
-# class WolfPageAdminForm(forms.ModelForm):
-#     body = forms.CharField(widget=CKEditorWidget())
-#     class Meta:
-#         model = WolfPage
-#         fields = '__all__'
-#
-# class WolfPageAdmin(admin.ModelAdmin):
-#     form = WolfPageAdminForm
-#
-# admin.site.register(WolfPage, WolfPageAdmin)

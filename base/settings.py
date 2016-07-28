@@ -23,7 +23,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SELECTED_SITE = os.environ.get('BRAND', 'default') # see /base/sites.py for list of sites
 
-APXLV_PARTNER_ID = SITES[SELECTED_SITE]['APXLV_PARTNER_ID'] # APXLV ID used for PyBeagle, 17 is only used for testing.
 SITE_ID = SITES[SELECTED_SITE]['SITE_ID']
 SECRET_KEY = SITES[SELECTED_SITE]['SECRET_KEY']
 ADMIN_SITE_HEADER = SITES[SELECTED_SITE]['SITE_NAME']
