@@ -3,8 +3,8 @@
 
 from rest_framework import serializers
 from allauth.socialaccount.models import SocialToken
-# Import your models to use with the API here:
-from api.models import User, Candidate, Question, Showdown, Friend
+
+from api.models import User, Game, WordSet, Word, Card, Guess, Clue
 from rest_framework.authtoken.models import Token
 # Import special API serializer mixins from api/mixins.py
 from api.mixins import DynamicFieldsMixin
@@ -66,25 +66,42 @@ class SocialTokenSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
         fields = ('key', 'user_id')
 
 
-class CandidateSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
+class GameSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = Candidate
+        model = Game
+        fields = (
+            'id', 'url', 'unique_id', 'red_giver', 'red_guesser',
+            'blue_giver', 'blue_guesser', 'current_turn', 'current_guess_number',
+            'red_remaining', 'blue_remaining', 'started_date', 'active',
+            'winning_team', 'word_set'
+        )
+
+
+class WordSetSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
+    class Meta:
         fields = ('id', 'name', 'url', 'description')
+        model = WordSet
 
 
-class QuestionSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
+class WordSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = Question
-        fields = ('id', 'title', 'url', 'description')
+        model = Word
+        fields = ('id', 'text', 'word_set', 'url')
 
 
-class ShowdownSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
+class CardSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = Showdown
-        fields = ('id', 'url', 'winner', 'loser', 'rater', 'created_at')
+        model = Card
+        fields = ('id', 'url', 'word', 'chosen', 'color', 'game')
 
 
-class FriendSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
+class GuessSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = Friend
-        fields = ('id', 'url', 'first_name', 'last_name', 'facebook_id', 'image_url')
+        model = Guess
+        fields = ('id', 'url', 'user', 'guesser_team', 'game', 'card')
+
+
+class ClueSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = Clue
+        fields = ('id', 'url', 'word', 'number', 'giver', 'game')

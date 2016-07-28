@@ -47,6 +47,7 @@ class WordSet(models.Model):
     '''A set of words grouped together'''
     name = models.CharField(max_length=200, default='alternate')
     url = models.URLField(null=True, blank=True)
+    description = models.CharField(max_length=400, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
