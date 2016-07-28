@@ -54,45 +54,55 @@ class TokenViewSet(viewsets.ReadOnlyModelViewSet):
             return []
 
 
-class QuestionViewSet(viewsets.ModelViewSet):
-    queryset = Question.objects.all()
-    serializer_class = QuestionSerializer
+class GameViewSet(viewsets.ModelViewSet):
+    queryset = Game.objects.all()
+    serializer_class = GameSerializer
 
     def get_queryset(self):
-        title = self.request.query_params.get('title', None)
+        unique_id = self.request.query_params.get('unique_id', None)
 
-        if title is not None:
-            return self.queryset.filter(title__icontains=title)
+        if unique_id is not None:
+            return self.queryset.filter(title__icontains=unique_id)
         else:
             return self.queryset
 
 
-class ShowdownViewSet(viewsets.ModelViewSet):
-    queryset = Showdown.objects.all()
-    serializer_class = ShowdownSerializer
-
-
-class CandidateViewSet(viewsets.ModelViewSet):
-    queryset = Candidate.objects.all()
-    serializer_class = CandidateSerializer
+class WordSetViewSet(viewsets.ModelViewSet):
+    queryset = WordSet.objects.all()
+    serializer_class = WordSetSerializer
 
     def get_queryset(self):
         name = self.request.query_params.get('name', None)
 
         if name is not None:
-            return self.queryset.filter(name__icontains=name)
+            return self.queryset.filter(title__icontains=name)
         else:
             return self.queryset
 
 
-class FriendViewSet(viewsets.ModelViewSet):
-    queryset = Friend.objects.all()
-    serializer_class = FriendSerializer
+class WordViewSet(viewsets.ModelViewSet):
+    queryset = Word.objects.all()
+    serializer_class = WordSerializer
 
     def get_queryset(self):
-        first_name = self.request.query_params.get('first_name', None)
+        text = self.request.query_params.get('text', None)
 
-        if first_name is not None:
-            return self.queryset.filter(first_name__icontains=first_name)
+        if text is not None:
+            return self.queryset.filter(name__icontains=text)
         else:
             return self.queryset
+
+
+class CardViewSet(viewsets.ModelViewSet):
+    queryset = Card.objects.all()
+    serializer_class = CardSerializer
+
+
+class GuessViewSet(viewsets.ModelViewSet):
+    queryset = Guess.objects.all()
+    serializer_class = GuessSerializer
+
+
+class ClueViewSet(viewsets.ModelViewSet):
+    queryset = Clue.objects.all()
+    serializer_class = ClueSerializer
