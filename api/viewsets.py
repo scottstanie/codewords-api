@@ -62,7 +62,7 @@ class GameViewSet(viewsets.ModelViewSet):
         unique_id = self.request.query_params.get('unique_id', None)
 
         if unique_id is not None:
-            return self.queryset.filter(title__icontains=unique_id)
+            return self.queryset.filter(unique_id__icontains=unique_id)
         else:
             return self.queryset
 
@@ -75,7 +75,7 @@ class WordSetViewSet(viewsets.ModelViewSet):
         name = self.request.query_params.get('name', None)
 
         if name is not None:
-            return self.queryset.filter(title__icontains=name)
+            return self.queryset.filter(name__icontains=name)
         else:
             return self.queryset
 
@@ -88,7 +88,7 @@ class WordViewSet(viewsets.ModelViewSet):
         text = self.request.query_params.get('text', None)
 
         if text is not None:
-            return self.queryset.filter(name__icontains=text)
+            return self.queryset.filter(text__icontains=text)
         else:
             return self.queryset
 
@@ -96,6 +96,14 @@ class WordViewSet(viewsets.ModelViewSet):
 class CardViewSet(viewsets.ModelViewSet):
     queryset = Card.objects.all()
     serializer_class = CardSerializer
+
+    def get_queryset(self):
+        game_id = self.request.query_params.get('game', None)
+
+        if game_id is not None:
+            return self.queryset.filter(game__id=game_id)
+        else:
+            return self.queryset
 
 
 class GuessViewSet(viewsets.ModelViewSet):

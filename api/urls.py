@@ -16,10 +16,13 @@ def register(route, viewset, *args, **kwargs):
 
 register(r'users', UserViewSet)
 register(r'token', TokenViewSet)
-register(r'showdown', ShowdownViewSet)
-register(r'question', QuestionViewSet)
-register(r'candidate', CandidateViewSet)
-register(r'friend', FriendViewSet)
+
+register(r'games', GameViewSet)
+register(r'wordsets', WordSetViewSet)
+register(r'words', WordViewSet)
+register(r'cards', CardViewSet)
+register(r'guesses', GuessViewSet)
+register(r'cluee', ClueViewSet)
 
 # URL routes to be fed into /base/urls.py
 # All custom views in /api/views.py are defined under api_views

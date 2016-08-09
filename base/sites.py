@@ -14,7 +14,7 @@ SITES = {
         'SITE_ID': 1,
         'SITE_NAME': 'Codenames',
         'SITE_DOMAIN': 'codenames.scottstaniewicz.com',
-        'SECRET_KEY': 'k0uthv^x*30^q3@k8=@k5oc=k)yd3vgnv#nezob#w7z8+lg6^6',
+        'SECRET_KEY': 'k0uthv^x*30^q3@k8=@k5oc=k)ydv#nezob#w7z8+lg6^6',
 
         # Below are test keys for OAuth authentication through django-allauth.
         # They only work on http://localhost:8000/ or through a specific Ngrok proxy.
@@ -46,13 +46,21 @@ SITES = {
             'DB_PORT': '' # DB Port, ex. 5432
         },
         'LOCAL_DATABASE': {
-            'DB_ENGINE': 'django.db.backends.sqlite3',
-            'DB_NAME': os.path.join(BASE_DIR, 'wolfhound_dev_database.db'),
+            'DB_ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'DB_NAME': 'codenames',
             'DB_USER': '',
-            'DB_PASSWORD': '',
-            'DB_HOST': '',
-            'DB_PORT': ''
+            'DB_PASSWORD': '', # DB Password
+            'DB_HOST': 'localhost',
+            'DB_PORT': 5432
         }
+        # 'LOCAL_DATABASE': {
+        #     'DB_ENGINE': 'django.db.backends.sqlite3',
+        #     'DB_NAME': os.path.join(BASE_DIR, 'wolfhound_dev_database.db'),
+        #     'DB_USER': '',
+        #     'DB_PASSWORD': '',
+        #     'DB_HOST': '',
+        #     'DB_PORT': ''
+        # }
     }
 }
 

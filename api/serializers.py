@@ -90,6 +90,8 @@ class WordSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
 
 
 class CardSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
+    word = WordSerializer()
+
     class Meta:
         model = Card
         fields = ('id', 'url', 'word', 'chosen', 'color', 'game')
