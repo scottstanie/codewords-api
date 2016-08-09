@@ -173,9 +173,9 @@ WSGI_APPLICATION = 'base.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 if DB_ENV == 'prod':
-    locals().update(SITES['default']['DATABASE'])
+    DATABASES = {'default': SITES['default']['DATABASE']}
 else:
-    locals().update(SITES['default']['LOCAL_DATABASE'])
+    DATABASES = {'default': SITES['default']['LOCAL_DATABASE']}
 
 
 # Password validation
