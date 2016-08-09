@@ -28,7 +28,7 @@ SECRET_KEY = SITES[SELECTED_SITE]['SECRET_KEY']
 ADMIN_SITE_HEADER = SITES[SELECTED_SITE]['SITE_NAME']
 
 # SECURITY WARNING: DON'T run with DEBUG = True turned on in production
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 DB_ENV = 'dev' # 'dev' for local sqlite database, 'prod' for production database.
 
