@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 """
 
 import os, sys, mimetypes
+import string
+import random
 from base.sites import SITES, generate_cors_whitelist
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -21,16 +23,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ######################## IMPORTANT SETTINGS ########################
 
-SELECTED_SITE = os.environ.get('BRAND', 'default') # see /base/sites.py for list of sites
-
-SITE_ID = SITES[SELECTED_SITE]['SITE_ID']
-SECRET_KEY = SITES[SELECTED_SITE]['SECRET_KEY']
-ADMIN_SITE_HEADER = SITES[SELECTED_SITE]['SITE_NAME']
+SECRET_KEY = os.environ.get('SECRET_KEY', "".join(random.choice(string.printable) for i in range(40)))
+ADMIN_SITE_HEADER = SITES['default']['SITE_NAME']
 
 # SECURITY WARNING: DON'T run with DEBUG = True turned on in production
 DEBUG = False
 ALLOWED_HOSTS = ['*']
-DB_ENV = 'dev' # 'dev' for local sqlite database, 'prod' for production database.
+DB_ENV = 'prod'  # 'dev' for local sqlite database, 'prod' for production database.
 
 # CUSTOM USER MODEL
 # See /api/models.py
@@ -81,23 +80,6 @@ SOCIALACCOUNT_PROVIDERS = {
 CORS_ORIGIN_WHITELIST = generate_cors_whitelist(SITES)
 CORS_ALLOW_CREDENTIALS = True
 
-# Settings for the WYSIWYG editor for WolfPages
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ["Format", "Bold", "Italic", "Underline", "Strike", "SpellChecker"],
-            ['NumberedList', 'BulletedList', "Indent", "Outdent", 'JustifyLeft',
-                'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            ["Image", "Table", "Link", "Unlink", "Anchor", "SectionLink",
-                "Subscript", "Superscript"],
-            ['Undo', 'Redo'],
-            ["Source"],
-            ["Maximize"]
-        ],
-    }
-}
-
 
 #################### END OF IMPORTANT SETTINGS #####################
 
@@ -124,7 +106,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-    'ckeditor',
 
     # CUSTOM APPS, insert custom apps you create here:
     'api',
@@ -149,7 +130,7 @@ ROOT_URLCONF = 'base.urls'
 
 # REST API Settings, Permissions, and Pagination
 
-if DEBUG == False:
+if DEBUG is False:
     REST_RENDERER = ('rest_framework.renderers.JSONRenderer',)
 else:
     REST_RENDERER = (
@@ -192,28 +173,10 @@ WSGI_APPLICATION = 'base.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 if DB_ENV == 'prod':
-    locals().update(SITES[SELECTED_SITE]['DATABASE'])
+    locals().update(SITES['default']['DATABASE'])
 else:
-    locals().update(SITES[SELECTED_SITE]['LOCAL_DATABASE'])
+    locals().update(SITES['default']['LOCAL_DATABASE'])
 
-DATABASES = {
-    'default': {
-        'ENGINE': DB_ENGINE,
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
-    }
-}
-
-# TEST DATABASE for TravisCI
-
-if 'test' in sys.argv:
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'wolfhound_test_database.db')
-    }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -246,15 +209,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-mimetypes.add_type('image/svg+xml', '.svg') # Makes Django recognize SVG
+mimetypes.add_type('image/svg+xml', '.svg')  # Makes Django recognize SVG
 STATIC_URL = '/dist/'
 MEDIA_URL = '/media/'
 
 # The following makes sure the same static folders are used
 # in both the DEBUG environment and production:
 
-if DEBUG == False:
-    STATIC_ROOT =  os.path.join(BASE_DIR, 'dist')
+if DEBUG is False:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 else:
     STATICFILES_DIRS = (

@@ -5,24 +5,15 @@ This file us used for site setup and multi-site configuration.
 """
 
 import os
+import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Define your sites here:
 
 SITES = {
     'default': {
-        'SITE_ID': 1,
-        'SITE_NAME': 'Codenames',
-        'SITE_DOMAIN': 'codenames.scottstaniewicz.com',
-        'SECRET_KEY': 'k0uthv^x*30^q3@k8=@k5oc=k)ydv#nezob#w7z8+lg6^6',
-
-        # Below are test keys for OAuth authentication through django-allauth.
-        # They only work on http://localhost:8000/ or through a specific Ngrok proxy.
-        # Uncomment below if you wish to use these test keys.
-        # Please DO NOT use them in production.
-
-        'FACEBOOK_KEY': '1774359446126514',
-        'FACEBOOK_SECRET': '0f3bd26f79670a492521a4cf10c1f16e',
+        'SITE_NAME': 'Codewords API',
+        'SITE_DOMAIN': 'codewords-api.herokuapp.com',
 
         # The following are database settings for your app.
         # For more info on databases in Django, see:
@@ -37,14 +28,7 @@ SITES = {
         # LOCAL_DATABASE is used when DB_ENV = 'dev'
         # There is no need to touch the settings for LOCAL_DATABASE.
 
-        'DATABASE': {
-            'DB_ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'DB_NAME': '', # DB Name, ex. wolfhound
-            'DB_USER': '', # DB User
-            'DB_PASSWORD': '', # DB Password
-            'DB_HOST': '', # DB Address,
-            'DB_PORT': '' # DB Port, ex. 5432
-        },
+        'DATABASE': dj_database_url.config(),
         'LOCAL_DATABASE': {
             'DB_ENGINE': 'django.db.backends.postgresql_psycopg2',
             'DB_NAME': 'codenames',
