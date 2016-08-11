@@ -5,7 +5,6 @@ This file us used for site setup and multi-site configuration.
 """
 
 import os
-import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Define your sites here:
@@ -28,15 +27,6 @@ SITES = {
         # LOCAL_DATABASE is used when DB_ENV = 'dev'
         # There is no need to touch the settings for LOCAL_DATABASE.
 
-        'DATABASE': dj_database_url.config(),
-        'LOCAL_DATABASE': {
-            'DB_ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'DB_NAME': 'codenames',
-            'DB_USER': '',
-            'DB_PASSWORD': '', # DB Password
-            'DB_HOST': 'localhost',
-            'DB_PORT': 5432
-        }
         # 'LOCAL_DATABASE': {
         #     'DB_ENGINE': 'django.db.backends.sqlite3',
         #     'DB_NAME': os.path.join(BASE_DIR, 'wolfhound_dev_database.db'),

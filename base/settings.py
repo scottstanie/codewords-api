@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 import os, sys, mimetypes
 import string
 import random
+import dj_database_url
 from base.sites import SITES, generate_cors_whitelist
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -29,6 +30,7 @@ ADMIN_SITE_HEADER = SITES['default']['SITE_NAME']
 # SECURITY WARNING: DON'T run with DEBUG = True turned on in production
 DEBUG = False
 ALLOWED_HOSTS = ['*']
+# DB_ENV = 'dev'  # 'dev' for local sqlite database, 'prod' for production database.
 DB_ENV = 'prod'  # 'dev' for local sqlite database, 'prod' for production database.
 
 # CUSTOM USER MODEL
@@ -123,7 +125,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'base.middleware.WolfhoundSiteMiddleware',
-    'base.middleware.WolfhoundSetSessionMiddleware',
+    # 'base.middleware.WolfhoundSetSessionMiddleware',
 ]
 
 ROOT_URLCONF = 'base.urls'
@@ -141,8 +143,8 @@ else:
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_RENDERER_CLASSES':
         REST_RENDERER,
@@ -173,9 +175,16 @@ WSGI_APPLICATION = 'base.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 if DB_ENV == 'prod':
-    DATABASES = {'default': SITES['default']['DATABASE']}
+    DATABASES = {'default': dj_database_url.config()}
 else:
-    DATABASES = {'default': SITES['default']['LOCAL_DATABASE']}
+    DATABASES = {
+        'DB_ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'DB_NAME': 'codenames',
+        'DB_USER': '',
+        'DB_PASSWORD': '',  # DB Password
+        'DB_HOST': 'localhost',
+        'DB_PORT': 5432
+    }
 
 
 # Password validation
