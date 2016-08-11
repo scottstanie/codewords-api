@@ -125,7 +125,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'base.middleware.WolfhoundSiteMiddleware',
+    # 'base.middleware.WolfhoundSiteMiddleware',
     # 'base.middleware.WolfhoundSetSessionMiddleware',
 ]
 
