@@ -26,6 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('SECRET_KEY', "".join(random.choice(string.printable) for i in range(40)))
 ADMIN_SITE_HEADER = SITES['default']['SITE_NAME']
+SITE_ID = SITES['default']['SITE_ID']
 
 # SECURITY WARNING: DON'T run with DEBUG = True turned on in production
 DEBUG = False
@@ -124,7 +125,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'base.middleware.WolfhoundSiteMiddleware',
+    'base.middleware.WolfhoundSiteMiddleware',
     # 'base.middleware.WolfhoundSetSessionMiddleware',
 ]
 
@@ -169,7 +170,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'base.wsgi.application'
-
 
 # DATABASE settings, obtained from server/base/sites.py
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases

@@ -13,6 +13,7 @@ SITES = {
     'default': {
         'SITE_NAME': 'Codewords API',
         'SITE_DOMAIN': 'codewords-api.herokuapp.com',
+        'SITE_ID': 1,
 
         # The following are database settings for your app.
         # For more info on databases in Django, see:
