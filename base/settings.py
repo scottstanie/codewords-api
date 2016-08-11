@@ -14,7 +14,7 @@ import os, sys, mimetypes
 import string
 import random
 import dj_database_url
-from base.sites import SITES, generate_cors_whitelist
+from base.sites import SITES  # , generate_cors_whitelist
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -80,7 +80,8 @@ SOCIALACCOUNT_PROVIDERS = {
 
 # CROSS ORIGIN RESOURCE SHARING WHITELIST
 # Please check /base/sites.py before production!
-CORS_ORIGIN_WHITELIST = generate_cors_whitelist(SITES)
+# CORS_ORIGIN_WHITELIST = generate_cors_whitelist(SITES)
+CORS_ORIGIN_WHITELIST = ('*',)
 CORS_ALLOW_CREDENTIALS = True
 
 
@@ -122,11 +123,10 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'base.middleware.WolfhoundSiteMiddleware',
-    # 'base.middleware.WolfhoundSetSessionMiddleware',
+    'base.middleware.DisableCSRF',
 ]
 
 ROOT_URLCONF = 'base.urls'
@@ -143,9 +143,9 @@ else:
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'base.middleware.CsrfExemptSessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_RENDERER_CLASSES':
         REST_RENDERER,
@@ -177,14 +177,14 @@ WSGI_APPLICATION = 'base.wsgi.application'
 if DB_ENV == 'prod':
     DATABASES = {'default': dj_database_url.config()}
 else:
-    DATABASES = {
-        'DB_ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'DB_NAME': 'codenames',
-        'DB_USER': '',
-        'DB_PASSWORD': '',  # DB Password
-        'DB_HOST': 'localhost',
-        'DB_PORT': 5432
-    }
+    DATABASES = {'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'codenames',
+        'USER': '',
+        'PASSWORD': '',  # DB Password
+        'HOST': 'localhost',
+        'PORT': 5432
+    }}
 
 
 # Password validation
