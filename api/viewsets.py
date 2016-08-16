@@ -98,8 +98,10 @@ class CardViewSet(viewsets.ModelViewSet):
     serializer_class = CardSerializer
 
     def get_queryset(self):
+
         game_id = self.request.query_params.get('game', None)
 
+        print game_id
         if game_id is not None:
             return self.queryset.filter(game__id=game_id)
         else:

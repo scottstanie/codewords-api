@@ -32,7 +32,7 @@ SITE_ID = SITES['default']['SITE_ID']
 DEBUG = False
 ALLOWED_HOSTS = ['*']
 # DB_ENV = 'dev'  # 'dev' for local sqlite database, 'prod' for production database.
-DB_ENV = 'prod'  # 'dev' for local sqlite database, 'prod' for production database.
+DB_ENV = 'env'  # 'dev' for local sqlite database, 'prod' for production database.
 
 # CUSTOM USER MODEL
 # See /api/models.py
