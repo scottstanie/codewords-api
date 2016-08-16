@@ -5,8 +5,8 @@ from django.http import HttpResponse
 
 from django.conf import settings
 
-from rest_framework.response import Response
 from rest_framework import authentication, permissions, status
+from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 
 from models import Game, User, Word, Card, Guess, Clue, TURN_STATES
@@ -38,7 +38,7 @@ class IsCurrentGiver(permissions.BasePermission):
 
 @api_view(['POST'])
 @authentication_classes([authentication.TokenAuthentication])
-@permission_classes([IsCurrentGuesser])
+@permission_classes([IsCurrentGuesser, permissions.IsAuthenticated])
 def guess(request):
 
     word_id = request.POST['wordId']
@@ -96,7 +96,7 @@ def check_double_post(game, user):
 
 @api_view(['POST'])
 @authentication_classes([authentication.TokenAuthentication])
-@permission_classes([IsCurrentGiver])
+@permission_classes([IsCurrentGiver, permissions.IsAuthenticated])
 def give(request):
     text = request.POST['text']
     unique_id = request.POST['game_id']
@@ -160,6 +160,7 @@ def find_waiting_games(user, giving, guessing):
 
 @api_view(['GET'])
 @authentication_classes([authentication.TokenAuthentication])
+@permission_classes([permissions.IsAuthenticated])
 def waiting(request, user_id):
     '''Sends a JsonResponse back with 'true'
     if there are games waiting on this user'''
