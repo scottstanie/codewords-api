@@ -59,10 +59,13 @@ class GameViewSet(viewsets.ModelViewSet):
     serializer_class = GameSerializer
 
     def get_queryset(self):
-        unique_id = self.request.query_params.get('unique_id', None)
+        unique_id = self.request.query_params.get('unique_id')
+        id = self.request.query_params.get('id')
 
         if unique_id is not None:
             return self.queryset.filter(unique_id__icontains=unique_id)
+        elif id is not None:
+            return self.queryset.filter(id=id)
         else:
             return self.queryset
 
@@ -73,9 +76,12 @@ class WordSetViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         name = self.request.query_params.get('name', None)
+        id = self.request.query_params.get('name', None)
 
         if name is not None:
             return self.queryset.filter(name__icontains=name)
+        elif id is not None:
+            return self.queryset.filter(id=id)
         else:
             return self.queryset
 
