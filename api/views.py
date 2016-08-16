@@ -36,7 +36,7 @@ class IsCurrentGiver(permissions.BasePermission):
         return is_current_player and is_a_giver
 
 
-@api_view(['Post'])
+@api_view(['POST'])
 @authentication_classes([authentication.TokenAuthentication])
 @permission_classes([IsCurrentGuesser])
 def guess(request):
@@ -94,7 +94,7 @@ def check_double_post(game, user):
     return user.username != game.current_player().username
 
 
-@api_view(['Post'])
+@api_view(['POST'])
 @authentication_classes([authentication.TokenAuthentication])
 @permission_classes([IsCurrentGiver])
 def give(request):
@@ -138,6 +138,38 @@ def check_game_over(game):
     elif game.blue_remaining == 0:
         game.winning_team = 'blue'
         game.active = False
+
+
+def find_games(user):
+    '''Find all (unique) games with this user, break out by giving and guessing
+    Sorted by started date descending'''
+    red_givers = list(Game.objects.filter(red_giver=user))
+    blue_givers = list(Game.objects.filter(blue_giver=user))
+    red_guessers = list(Game.objects.filter(red_guesser=user))
+    blue_guessers = list(Game.objects.filter(blue_guesser=user))
+    giving = sorted(list(set(red_givers + blue_givers)), key=lambda g: g.started_date, reverse=True)
+    guessing = sorted(list(set(red_guessers + blue_guessers)), key=lambda g: g.started_date, reverse=True)
+    return giving, guessing
+
+
+def find_waiting_games(user, giving, guessing):
+    '''Return the list of games that are waiting on the given user'''
+    return [g for g in (giving + guessing)
+            if g.current_player().id == user.id and g.active is True]
+
+
+@api_view(['GET'])
+@authentication_classes([authentication.TokenAuthentication])
+def waiting(request, user_id):
+    '''Sends a JsonResponse back with 'true'
+    if there are games waiting on this user'''
+    if not user_id or user_id == 'None':
+        return Response({'waitingOnYou': False})
+    user = User.objects.filter(id=user_id).first()
+
+    giving, guessing = find_games(user)
+    waiting_on_you = find_waiting_games(user, giving, guessing)
+    return Response({'waitingOnYou': waiting_on_you != []})
 
 
 # Ping Test view

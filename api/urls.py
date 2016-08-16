@@ -1,5 +1,5 @@
 from django.conf.urls import url, include
-from rest_framework import routers, views, reverse, response
+from rest_framework import routers
 from rest_framework.authtoken import views as authtoken_views
 from api import views as api_views
 from api.viewsets import *
@@ -35,4 +35,7 @@ urlpatterns = [
     url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api-token-auth/', authtoken_views.obtain_auth_token),
     url(r'^$', api_views.index, name='index'),
+    url(r'^guess/$', api_views.guess, name='guess'),
+    url(r'^give/$', api_views.give, name='give'),
+    url(r'^waiting/(?P<user_id>\w+)$', api_views.waiting, name='waiting'),
 ]
