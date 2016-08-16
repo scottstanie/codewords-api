@@ -1,13 +1,15 @@
+from itertools import cycle
+
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 
 from django.conf import settings
 
 from rest_framework.response import Response
-from rest_framework import authentication, permissions
+from rest_framework import authentication, permissions, status
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 
-from models import Game, User, Word, Card, Guess, Clue
+from models import Game, User, Word, Card, Guess, Clue, TURN_STATES
 
 
 # Index View
@@ -65,7 +67,7 @@ def guess(request):
         game.current_turn = find_next_turn(game)
         game.current_guess_number = 0
         game.save()
-        return Response({"status": "accepted", "game": game.id})
+        return Response({"message": "OK"})
     else:
         game.current_guess_number += 1
 
@@ -85,7 +87,7 @@ def guess(request):
     check_game_over(game)
 
     game.save()
-    return Response({"status": "accepted", "game": game.id})
+    return Response({"message": "OK"})
 
 
 def check_double_post(game, user):
@@ -104,15 +106,14 @@ def give(request):
     user = get_object_or_404(User, username=player)
     if check_double_post(game, user):
         # Player has already given clue, probably a double post
-        return HttpResponseRedirect(reverse('game', args=(game.unique_id,)))
+        return Response({'message': 'double post'}, status=status.HTTP_409_CONFLICT)
 
     count = request.POST['count']
     clue = Clue(word=text, number=count, giver=user, game=game)
     clue.save()
     game.current_turn = find_next_turn(game)
     game.save()
-    return HttpResponseRedirect(reverse('game', args=(unique_id,)))
-
+    return Response({'message': 'ok'})
 
 
 def find_next_turn(game):
