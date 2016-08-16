@@ -22,7 +22,7 @@ register(r'wordsets', WordSetViewSet)
 register(r'words', WordViewSet)
 register(r'cards', CardViewSet)
 register(r'guesses', GuessViewSet)
-register(r'cluee', ClueViewSet)
+register(r'clue', ClueViewSet)
 
 # URL routes to be fed into /base/urls.py
 # All custom views in /api/views.py are defined under api_views
