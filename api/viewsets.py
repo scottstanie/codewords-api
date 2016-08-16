@@ -101,7 +101,6 @@ class CardViewSet(viewsets.ModelViewSet):
 
         game_id = self.request.query_params.get('game', None)
 
-        print game_id
         if game_id is not None:
             return self.queryset.filter(game__id=game_id)
         else:
