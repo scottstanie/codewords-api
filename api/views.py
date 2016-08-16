@@ -152,25 +152,43 @@ def find_games(user):
     return giving, guessing
 
 
-def find_waiting_games(user, giving, guessing):
+def find_waiting_games(user, game_list):
     '''Return the list of games that are waiting on the given user'''
-    return [g for g in (giving + guessing)
-            if g.current_player().id == user.id and g.active is True]
+    return [g for g in game_list if g.current_player().id == user.id and g.active is True]
 
 
 @api_view(['GET'])
 @authentication_classes([authentication.TokenAuthentication])
-@permission_classes([permissions.IsAuthenticated])
-def waiting(request, user_id):
+# @permission_classes([permissions.IsAuthenticated])
+def waiting(request, user_id, game_id=None):
     '''Sends a JsonResponse back with 'true'
     if there are games waiting on this user'''
+    # TODO: make this user request.user, not in url
     if not user_id or user_id == 'None':
         return Response({'waitingOnYou': False})
     user = User.objects.filter(id=user_id).first()
 
-    giving, guessing = find_games(user)
-    waiting_on_you = find_waiting_games(user, giving, guessing)
+    if game_id:
+        game_list = Game.objects.filter(id=game_id)
+    else:
+        giving, guessing = find_games(user)
+        game_list = giving + guessing
+
+    waiting_on_you = find_waiting_games(user, game_list)
     return Response({'waitingOnYou': waiting_on_you != []})
+
+
+@api_view(['GET'])
+@authentication_classes([authentication.TokenAuthentication])
+# @permission_classes([permissions.IsAuthenticated])
+def game_role(request, game_id):
+    '''Returns the rols of the request.user in this game'''
+    g = get_object_or_404(Game, id=game_id)
+
+    return Response({
+        'is_guesser': g.is_guesser(request.user),
+        'is_giver': g.is_giver(request.user)
+    })
 
 
 # Ping Test view

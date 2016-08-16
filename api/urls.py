@@ -37,5 +37,6 @@ urlpatterns = [
     url(r'^$', api_views.index, name='index'),
     url(r'^guess/$', api_views.guess, name='guess'),
     url(r'^give/$', api_views.give, name='give'),
-    url(r'^waiting/(?P<user_id>\w+)$', api_views.waiting, name='waiting'),
+    url(r'^waiting/(?P<user_id>\w+)/(?P<game_id>\w+)$', api_views.waiting, name='waiting'),
+    url(r'^game_role/(?P<game_id>\w+)$', api_views.game_role, name='game_role'),
 ]

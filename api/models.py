@@ -101,6 +101,9 @@ class Game(models.Model):
     def is_giver(self, user):
         return user == self.blue_giver or user == self.red_giver
 
+    def is_guesser(self, user):
+        return user == self.blue_guesser or user == self.red_guesser
+
     def print_with_score(self):
         return "Game %s: %s red remaining, %s blue remaining" % \
                 (self.unique_id, self.red_remaining, self.blue_remaining)
